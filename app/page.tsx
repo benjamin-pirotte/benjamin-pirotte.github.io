@@ -74,17 +74,17 @@ export default function ResumePage() {
   .gap-6, .gap-4 { gap: 0.3rem !important; }
 
   /* Padding inside sections */
-  .card-content, .CardContent, .padded-section {
+  .card-content, .CardContent, .print-padded-section {
     padding: 0.5rem !important;
   }
 
   /* Margin between main sections like Core Competencies and Professional Experience */
-  .main-section + .main-section {
+  .print-main-section + .print-main-section {
     margin-top: 1rem !important;
   }
 
   /* Reduce image/profile picture size */
-  .w-32, .h-32 { width: 3rem !important; height: 3rem !important; }
+  .w-36, .h-36 { width: 6rem !important; height: 6rem !important; margin-top: 2.5rem  }
 
   /* Layout refinements */
   .max-w-4xl { max-width: 100% !important; }
@@ -115,11 +115,11 @@ export default function ResumePage() {
 `}</style>
       <div className="max-w-4xl mx-auto p-6 space-y-8">
         {/* Header Section */}
-        <Card className="border-0 shadow-lg main-section">
+        <Card className="border-0 shadow-lg print-main-section">
           {/* Print Button */}
           <CardContent className="p-8">
             <div>
-              <div className="flex flex-col md:flex-row gap-6 items-start">
+              <div className="flex  flex-row gap-6 items-start">
                 <div className="flex-1">
                   <h1 className="text-4xl font-bold text-gray-900 mb-2">Benjamin Pirotte</h1>
                   <h2 className="text-xl text-blue-600 font-semibold mb-4">
@@ -127,11 +127,11 @@ export default function ResumePage() {
                   </h2>
                   <div className="text-gray-600 eading-relaxed">
                     <p className="mb-6">
-                        Results-driven Product Manager with 15+ years of experience building products that solve real customer problems. Former software engineer turned product leader, driven by the belief that technology is just a means to deliver outcomes. I thrive in collaborative environments where customer impact, business goals, technical excellence, ownership, and autonomy drive success.
+                        Results-driven Product Manager with 15+ years of experience building products that solve real customer problems. Former software engineer turned product leader, driven by the belief that technology is just a means to deliver outcomes. <br/> I thrive in collaborative environments where customer impact, business goals, technical excellence, ownership, and autonomy drive success.
                     </p>
                   </div>
                 </div>
-                <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full items-center justify-center text-white text-2xl font-bold">
+                <div className="w-36 h-36 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full items-center justify-center text-white text-2xl font-bold">
                   <img width="200" className="rounded-full p2" alt="Benjamin Pirotte profile picture" src="/profile.png"/>
                 </div>
               </div>
@@ -140,19 +140,19 @@ export default function ResumePage() {
                 <div className="flex flex-1 flex-col md:flex-row gap-6 items-start">
                   <div className="flex flex-wrap gap-4 text-sm text-gray-600">
                     <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4" />
+                      <Mail className="w-4 h-4 text-green-600" />
                       <a href="mailto:benjamin.pirotte1@gmail.com">benjamin.pirotte1@gmail.com</a>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4" />
+                      <Phone className="w-4 h-4 text-green-600" />
                       <span>+32 493 74 53 73</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4" />
+                      <MapPin className="w-4 h-4 text-green-600" />
                       <span>Belgium (remote)</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Linkedin className="w-4 h-4" />
+                      <Linkedin className="w-4 h-4 text-green-600" />
                       <a target="_blank" href="https://linkedin.com/in/benjaminpirotte" >linkedin.com/in/benjaminpirotte</a>
                     </div>
                   </div>
@@ -170,14 +170,14 @@ export default function ResumePage() {
 
 
         {/* Core Skills */}
-        <Card className="border-0 shadow-lg main-section ">
+        <Card className="border-0 shadow-lg print-main-section ">
           <CardContent className="p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Target className="w-6 h-6 text-blue-600" />
               Core Competencies
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
-              <div className="space-y-3 padded-section">
+              <div className="space-y-3 print-padded-section">
                 <h4 className="font-semibold text-gray-800">Product Strategy</h4>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">Product Vision</Badge>
@@ -186,7 +186,7 @@ export default function ResumePage() {
                   <Badge variant="secondary">Roadmapping</Badge>
                 </div>
               </div>
-              <div className="space-y-3 padded-section">
+              <div className="space-y-3 print-padded-section">
                 <h4 className="font-semibold text-gray-800">Product Discovery</h4>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">Data Analysis</Badge>
@@ -195,7 +195,7 @@ export default function ResumePage() {
                   <Badge variant="secondary">A/B Testing</Badge>
                 </div>
               </div>
-              <div className="space-y-3 padded-section">
+              <div className="space-y-3 print-padded-section">
                 <h4 className="font-semibold text-gray-800">Product Delivery</h4>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">Lean Development</Badge>
@@ -203,7 +203,7 @@ export default function ResumePage() {
                   <Badge variant="secondary">Workflow Optimization</Badge>                 
                 </div>
               </div>
-              <div className="space-y-3 padded-section">
+              <div className="space-y-3 print-padded-section">
                 <h4 className="font-semibold text-gray-800">Technical expertise</h4>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">SQL</Badge>
@@ -218,7 +218,7 @@ export default function ResumePage() {
         </Card>
 
         {/* Experience */}
-        <Card className="border-0 shadow-lg padded-section">
+        <Card className="border-0 shadow-lg print-padded-section">
           <CardContent className="p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Building className="w-6 h-6 text-blue-600" />
@@ -255,7 +255,7 @@ export default function ResumePage() {
               </div>
 
               {/* Job 2 */}
-              <div className="border-l-4 border-blue-500 pl-6 padded-section">
+              <div className="border-l-4 border-blue-500 pl-6 print-padded-section">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Head of Product</h4>
@@ -283,7 +283,7 @@ export default function ResumePage() {
               </div>
 
               {/* Job 3 */}
-              <div className="border-l-4 border-blue-500 pl-6 padded-section">
+              <div className="border-l-4 border-blue-500 pl-6 print-padded-section">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Product Manager</h4>
@@ -311,7 +311,7 @@ export default function ResumePage() {
               </div>
 
               {/* Job 4 */}
-              <div className="border-l-4 border-blue-500 pl-6 padded-section">
+              <div className="border-l-4 border-blue-500 pl-6 print-padded-section">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Front-End Developer - E-marketing</h4>
@@ -334,36 +334,46 @@ export default function ResumePage() {
           </CardContent>
         </Card>
 
-        {/* Education & Achievements */}
-        <div className="grid md:grid-cols-2 gap-6 ">
-          <Card className="border-0 shadow-lg main-section">
-            <CardContent className="p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Education</h3>
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-semibold text-gray-800">Multimedia design</h4>
-                  <p className="text-gray-600">IFAPME</p>
-                  <p className="text-sm text-gray-500">2011 - 2013</p>
-                </div>
-              </div>
-              <h3 className="text-xl mt-4 font-bold text-gray-900 mb-4">Language</h3>
-              <div className="space-y-4">
-                <div>
-                  <Badge className="mr-2" variant="secondary">French (Native)</Badge>
-                  <Badge variant="secondary">English</Badge>
+        {/* Education & Interests */}
+        <div className="grid grid-cols-3 gap-6 items-stretch">
+          <Card className="border-0 shadow-lg main-section h-full flex flex-col">
+            <CardContent className="p-6 flex flex-col flex-1">
+              <div className="flex flex-col justify-between flex-grow h-full">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Education</h3>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-gray-800">Multimedia design</h4>
+                    <p className="text-gray-600">IFAPME</p>
+                    <p className="text-sm text-gray-500">2011 - 2013</p>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg main-section">
-            <CardContent className="p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Interests</h3>
-              <div className="space-y-3">
-                <Badge variant="secondary">Raising a little human</Badge>
-                <Badge variant="secondary">Exploring the world and different cultures</Badge>
-                <Badge variant="secondary">Hiking and nature</Badge>
-                <Badge variant="secondary">Music and live experience</Badge>
+          <Card className="border-0 shadow-lg main-section h-full flex flex-col">
+            <CardContent className="p-6 flex flex-col flex-1">
+              <div className="flex flex-col justify-between flex-grow h-full">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Language</h3>
+                <div className="space-y-4">
+                  <div>
+                    <Badge className="mr-2" variant="secondary">French (Native)</Badge>
+                    <Badge variant="secondary">English</Badge>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border-0 shadow-lg main-section h-full flex flex-col">
+            <CardContent className="p-6 flex flex-col flex-1">
+              <div className="flex flex-col justify-between flex-grow h-full">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Interests</h3>
+                <div className="space-y-3">
+                  <Badge variant="secondary">Raising a little human</Badge>
+                  <Badge variant="secondary">Exploring the world and different cultures</Badge>
+                  <Badge variant="secondary">Hiking and nature</Badge>
+                  <Badge variant="secondary">Music and live experience</Badge>
+                </div>
               </div>
             </CardContent>
           </Card>
