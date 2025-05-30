@@ -19,6 +19,11 @@ import {
   Lightbulb,
   Printer,
   Globe,
+  TrendingDown,
+  FileJson,
+  FastForward,
+  SmilePlus,
+  ChartGantt,
 } from "lucide-react"
 
 export default function ResumePage() {
@@ -29,146 +34,88 @@ export default function ResumePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
       <style jsx global>{`
-  @media print {
-    @page {
-      size: A4;
-      margin: 0.4in;
-    }
-    
-    body {
-      -webkit-print-color-adjust: exact;
-      color-adjust: exact;
-      font-size: 12px;
-    }
-    
-    .print\\:hidden {
-      display: none !important;
-    }
-    
-    .shadow-lg {
-      box-shadow: none !important;
-      border: 1px solid #e5e7eb !important;
-    }
-    
-    .bg-gradient-to-br {
-      background: white !important;
-    }
-    
-    .space-y-8 > * + * {
-      margin-top: 0.75rem !important;
-    }
-    
-    .space-y-6 > * + * {
-      margin-top: 0.5rem !important;
-    }
-    
-    .space-y-4 > * + * {
-      margin-top: 0.25rem !important;
-    }
-    
-    .space-y-3 > * + * {
-      margin-top: 0.25rem !important;
-    }
-    
-    .space-y-2 > * + * {
-      margin-top: 0.125rem !important;
-    }
-    
-    .text-4xl {
-      font-size: 1.5rem !important;
-      line-height: 1.2 !important;
-    }
-    
-    .text-2xl {
-      font-size: 1.125rem !important;
-      line-height: 1.2 !important;
-    }
-    
-    .text-xl {
-      font-size: 1rem !important;
-      line-height: 1.2 !important;
-    }
-    
-    .text-lg {
-      font-size: 0.875rem !important;
-    }
-    
-    .p-8 {
-      padding: 0.5rem !important;
-    }
-    
-    .p-6 {
-      padding: 0.375rem !important;
-    }
-    
-    .mb-6 {
-      margin-bottom: 0.5rem !important;
-    }
-    
-    .mb-4 {
-      margin-bottom: 0.375rem !important;
-    }
-    
-    .mb-3 {
-      margin-bottom: 0.25rem !important;
-    }
-    
-    .mb-2 {
-      margin-bottom: 0.125rem !important;
-    }
-    
-    .max-w-4xl {
-      max-width: 100% !important;
-    }
-    
-    .grid-cols-4 {
-      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    }
-    
-    .md\\:grid-cols-4 {
-      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    }
-    
-    .gap-4 {
-      gap: 0.25rem !important;
-    }
-    
-    .gap-6 {
-      gap: 0.375rem !important;
-    }
-    
-    .w-32 {
-      width: 4rem !important;
-    }
-    
-    .h-32 {
-      height: 4rem !important;
-    }
-    
-    .leading-relaxed {
-      line-height: 1.3 !important;
-    }
-    
-    .border-l-4 {
-      border-left-width: 2px !important;
-    }
-    
-    .pl-6 {
-      padding-left: 0.5rem !important;
-    }
-    
-    .flex-wrap {
-      flex-wrap: wrap !important;
-    }
-    
-    .gap-2 {
-      gap: 0.125rem !important;
-    }
+@media print {
+  @page {
+    size: A4;
+    margin: 0.4in;
   }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+    line-height: 1.4;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  /* Typography */
+  .text-4xl { font-size: 1.3rem !important; line-height: 1.2 !important; }
+  .text-2xl { font-size: 1rem !important; line-height: 1.2 !important; }
+  .text-xl { font-size: 0.9rem !important; line-height: 1.2 !important; }
+  .text-lg { font-size: 0.8rem !important; }
+
+  /* Spacing adjustments */
+  .p-8, .p-6 { padding: 0.4rem !important; }
+  .mb-6, .mb-4 { margin-bottom: 0.4rem !important; }
+
+  .space-y-8 > * + * { margin-top: 0.8rem !important; } /* Increased for section separation */
+  .space-y-6 > * + * { margin-top: 0.6rem !important; }
+  .space-y-4 > * + * { margin-top: 0.4rem !important; }
+  .space-y-3 > * + * { margin-top: 0.3rem !important; }
+  .space-y-2 > * + * { margin-top: 0.2rem !important; }
+
+  .gap-6, .gap-4 { gap: 0.3rem !important; }
+
+  /* Padding inside sections */
+  .card-content, .CardContent, .padded-section {
+    padding: 0.5rem !important;
+  }
+
+  /* Margin between main sections like Core Competencies and Professional Experience */
+  .main-section + .main-section {
+    margin-top: 1rem !important;
+  }
+
+  /* Reduce image/profile picture size */
+  .w-32, .h-32 { width: 3rem !important; height: 3rem !important; }
+
+  /* Layout refinements */
+  .max-w-4xl { max-width: 100% !important; }
+  .grid-cols-4, .md\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  .border-l-4 { border-left-width: 2px !important; }
+  .pl-6 { padding-left: 0.4rem !important; }
+  .flex-wrap { flex-wrap: wrap !important; }
+  .gap-2 { gap: 0.125rem !important; }
+  .leading-relaxed { line-height: 1.3 !important; }
+
+  /* Background and shadow adjustments */
+  .shadow-lg {
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
+  }
+
+  .bg-gradient-to-br {
+    background: white !important;
+  }
+
+  /* Optional: prevent page breaks inside key sections */
+  .no-break {
+    break-inside: avoid;
+  }
+}
+
+
 `}</style>
       <div className="max-w-4xl mx-auto p-6 space-y-8">
         {/* Header Section */}
-        <Card className="border-0 shadow-lg">
+        <Card className="border-0 shadow-lg main-section">
           {/* Print Button */}
           <CardContent className="p-8">
             <div>
@@ -202,7 +149,7 @@ export default function ResumePage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <MapPin className="w-4 h-4" />
-                      <span>Belgium</span>
+                      <span>Belgium (remote)</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Linkedin className="w-4 h-4" />
@@ -223,24 +170,24 @@ export default function ResumePage() {
 
 
         {/* Core Skills */}
-        <Card className="border-0 shadow-lg">
+        <Card className="border-0 shadow-lg main-section ">
           <CardContent className="p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Target className="w-6 h-6 text-blue-600" />
               Core Competencies
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="space-y-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
+              <div className="space-y-3 padded-section">
                 <h4 className="font-semibold text-gray-800">Product Strategy</h4>
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">Product Discovery</Badge>
+                  <Badge variant="secondary">Product Vision</Badge>
                   <Badge variant="secondary">OKR definition</Badge>
                   <Badge variant="secondary">Value-based prioritization</Badge>
                   <Badge variant="secondary">Roadmapping</Badge>
                 </div>
               </div>
-              <div className="space-y-3">
-                <h4 className="font-semibold text-gray-800">Data/Feedback-Driven</h4>
+              <div className="space-y-3 padded-section">
+                <h4 className="font-semibold text-gray-800">Product Discovery</h4>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">Data Analysis</Badge>
                   <Badge variant="secondary">User Research</Badge>
@@ -248,19 +195,20 @@ export default function ResumePage() {
                   <Badge variant="secondary">A/B Testing</Badge>
                 </div>
               </div>
-              <div className="space-y-3">
-                <h4 className="font-semibold text-gray-800">Delivery</h4>
+              <div className="space-y-3 padded-section">
+                <h4 className="font-semibold text-gray-800">Product Delivery</h4>
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">Lean Developmentn</Badge>
+                  <Badge variant="secondary">Lean Development</Badge>
                   <Badge variant="secondary">Agile frameworks </Badge>
                   <Badge variant="secondary">Workflow Optimization</Badge>                 
                 </div>
               </div>
-              <div className="space-y-3">
-                <h4 className="font-semibold text-gray-800">Technical expretise</h4>
+              <div className="space-y-3 padded-section">
+                <h4 className="font-semibold text-gray-800">Technical expertise</h4>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">SQL</Badge>
                   <Badge variant="secondary">Python</Badge>
+                  <Badge variant="secondary">Frontend technology</Badge>
                   <Badge variant="secondary">API Integration</Badge>
                   <Badge variant="secondary">Data Integration</Badge>
                 </div>
@@ -270,7 +218,7 @@ export default function ResumePage() {
         </Card>
 
         {/* Experience */}
-        <Card className="border-0 shadow-lg">
+        <Card className="border-0 shadow-lg padded-section">
           <CardContent className="p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Building className="w-6 h-6 text-blue-600" />
@@ -283,7 +231,7 @@ export default function ResumePage() {
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Product Manager</h4>
-                    <p className="text-blue-600 font-medium">Soda</p>
+                    <p className="text-blue-600 font-medium"><a target="_blank" href="https://soda.io">Soda</a></p>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
@@ -292,54 +240,54 @@ export default function ResumePage() {
                 </div>
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start gap-2">
+                    <Target className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
+                    <span>As the product organization was in its early stages, I helped accelerate delivery, establish structure and processes, and create feedback loops with customers, shifting prioritization from gut feeling to a value-driven approach.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
                     <TrendingUp className="w-4 h-4 mt-1 text-green-600 flex-shrink-0" />
-                    <span>Leading the product vision and roadmap for Soda’s Data Quality and Data Contracts platform.</span>
+                    <span>Soda’s initial focus was on the engineering persona. I led the development of a commercial product offering for business users, helping grow the customer base by over 10x.</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Users className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
-                    <span>Driving cross-functional collaboration with engineering, design, and go-to-market teams to deliver customer-centric solutions.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Database className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
-                    <span>Launched Soda’s Data Contracts product, enabling data teams to define and enforce data expectations at scale.</span>
+                    <ChartGantt className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
+                    <span>Currently, I’m leading the next-generation of Soda’s product, designed to bridge business and engineering needs with a streamlined model that drives faster adoption, reduces onboarding costs, and ultimately supports product-led growth.</span>
                   </li>
                 </ul>
               </div>
 
               {/* Job 2 */}
-              <div className="border-l-4 border-blue-500 pl-6">
+              <div className="border-l-4 border-blue-500 pl-6 padded-section">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Head of Product</h4>
-                    <p className="text-blue-600 font-medium">Aaqua</p>
+                    <p className="text-blue-600 font-medium"><a target="_blank" href="https://www.ricemedia.co/aaqua-failed-startup-singapore/">Aaqua</a></p>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
                     <span>Mar 2021 – Apr 2022</span>
                   </div>
                 </div>
-                <ul className="space-y-2 text-gray-700">
+                <ul className="space-y-2 text-gray-700 ">
                   <li className="flex items-start gap-2">
-                    <TrendingUp className="w-4 h-4 mt-1 text-green-600 flex-shrink-0" />
-                    <span>Defined and led the Trust & Safety product strategy for a new global social platform.</span>
+                    <Target className="w-4 h-4 mt-1 text-green-600 flex-shrink-0" />
+                    <span>For a new global social platform focused on the Asian market (Singapore based), I defined and led the Trust & Safety product strategy alongside the T&S expert team. I collaborated with creators and partners to build tools empowering them to manage communities..</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Users className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
-                    <span>Collaborated with stakeholders to build a safe environment for users and partners.</span>
+                    <TrendingDown className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
+                    <span>The project was ultimately discontinued shortly after I left due to organizational challenges, and the company ceased operations before launch.</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Database className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
-                    <span>Delivered moderation tools and dashboards empowering creators and partners to manage communities.</span>
+                    <SmilePlus className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
+                    <span>On a personal note, it’s where I met my wife—so while the product didn’t ship, it led to my greatest project.</span>
                   </li>
                 </ul>
               </div>
 
               {/* Job 3 */}
-              <div className="border-l-4 border-blue-500 pl-6">
+              <div className="border-l-4 border-blue-500 pl-6 padded-section">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Product Manager</h4>
-                    <p className="text-blue-600 font-medium">Collibra</p>
+                    <p className="text-blue-600 font-medium"><a target="_blank" href="https://collibra.com">Collibra</a></p>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
@@ -347,27 +295,27 @@ export default function ResumePage() {
                   </div>
                 </div>
                 <ul className="space-y-2 text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <TrendingUp className="w-4 h-4 mt-1 text-green-600 flex-shrink-0" />
-                    <span>Drove product development for Collibra’s Data Intelligence Platform, enabling integration and extensibility.</span>
+                   <li className="flex items-start gap-2">
+                    <ChartGantt className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
+                    <span>I started at Collibra as a Front-End Engineer, then transitioned into Product Management after one year, driven by a desire to focus on product outcomes rather than technology alone. </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Users className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
-                    <span>Collaborated with customers and internal stakeholders to deliver secure, scalable solutions.</span>
+                    <Target className="w-4 h-4 mt-1 text-green-600 flex-shrink-0" />
+                    <span>Drove product development for Collibra’s Data Intelligence Platform, enabling integration and extensibility. This platform allowed Collibra to respond quickly to market demands and empowered teams to deliver custom capabilities that helped close strategic, high-value deals (worth over $1 million in ARR).</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Database className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
-                    <span>Contributed to platform capabilities, empowering data governance and business insights.</span>
+                    <FastForward className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
+                    <span>Led the team’s shift from no front-end tests to full coverage (unit and end-to-end), enabling continuous integration and deployment—critical for Collibra’s transition from on-premise to a cloud-based platform. This eliminated month-long code freezes and manual testing bottlenecks.</span>
                   </li>
                 </ul>
               </div>
 
               {/* Job 4 */}
-              <div className="border-l-4 border-blue-500 pl-6">
+              <div className="border-l-4 border-blue-500 pl-6 padded-section">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
-                    <h4 className="text-xl font-semibold text-gray-900">Front-End Developer & Web Specialist</h4>
-                    <p className="text-blue-600 font-medium">Various Companies</p>
+                    <h4 className="text-xl font-semibold text-gray-900">Front-End Developer - E-marketing</h4>
+                    <p className="text-blue-600 font-medium"><a href="https://www.idweaver.com/" target="blank">IDWeaver</a>, <a href="https://www.synchrone.be/" target="blank">Synchrone</a>, Outlet-Avenue </p>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
@@ -376,16 +324,9 @@ export default function ResumePage() {
                 </div>
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start gap-2">
-                    <TrendingUp className="w-4 h-4 mt-1 text-green-600 flex-shrink-0" />
-                    <span>Developed user-centric features for SaaS, e-commerce, and CMS platforms.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Users className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
-                    <span>Collaborated with teams to deliver custom solutions for clients in retail, finance, and digital services.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Database className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
-                    <span>Worked with diverse technologies and platforms to build modern web applications and enhance user experience.</span>
+                    <FileJson className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
+                    Worked in digital agencies to design and develop websites across diverse industries, including e-commerce platforms, crowdfunding platforms, social networks, and marketing websites. Also supported e-marketing efforts through email campaigns and digital ads.
+
                   </li>
                 </ul>
               </div>
@@ -394,8 +335,8 @@ export default function ResumePage() {
         </Card>
 
         {/* Education & Achievements */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <Card className="border-0 shadow-lg">
+        <div className="grid md:grid-cols-2 gap-6 ">
+          <Card className="border-0 shadow-lg main-section">
             <CardContent className="p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Education</h3>
               <div className="space-y-4">
@@ -415,11 +356,11 @@ export default function ResumePage() {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg">
+          <Card className="border-0 shadow-lg main-section">
             <CardContent className="p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Interests</h3>
               <div className="space-y-3">
-                <Badge variant="secondary">Raising a 1yo little human</Badge>
+                <Badge variant="secondary">Raising a little human</Badge>
                 <Badge variant="secondary">Exploring the world and different cultures</Badge>
                 <Badge variant="secondary">Hiking and nature</Badge>
                 <Badge variant="secondary">Music and live experience</Badge>
