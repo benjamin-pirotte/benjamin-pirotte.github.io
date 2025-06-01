@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   verification: {
     google: "W3FW7pgb7MeS_r5GzJX-jirzccWWEBbiWUFIelc1ue4",
   },
+  icons: {
+    icon: "/favicon.png",
+  },
 }
 
 export default function RootLayout({

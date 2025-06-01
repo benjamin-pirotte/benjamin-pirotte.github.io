@@ -338,7 +338,7 @@ export default function ResumePage() {
         <div className="grid grid-cols-3 gap-6 items-stretch">
           <Card className="border-0 shadow-lg main-section h-full flex flex-col">
             <CardContent className="p-6 flex flex-col flex-1">
-              <div className="flex flex-col justify-between flex-grow h-full">
+              <div className="flex flex-col flex-grow h-full">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Education</h3>
                 <div className="space-y-4">
                   <div>
@@ -353,7 +353,7 @@ export default function ResumePage() {
 
           <Card className="border-0 shadow-lg main-section h-full flex flex-col">
             <CardContent className="p-6 flex flex-col flex-1">
-              <div className="flex flex-col justify-between flex-grow h-full">
+              <div className="flex flex-col flex-grow h-full">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Language</h3>
                 <div className="space-y-4">
                   <div>
@@ -366,7 +366,7 @@ export default function ResumePage() {
           </Card>
           <Card className="border-0 shadow-lg main-section h-full flex flex-col">
             <CardContent className="p-6 flex flex-col flex-1">
-              <div className="flex flex-col justify-between flex-grow h-full">
+              <div className="flex flex-col flex-grow h-full">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Interests</h3>
                 <div className="space-y-3">
                   <Badge variant="secondary">Raising a little human</Badge>
