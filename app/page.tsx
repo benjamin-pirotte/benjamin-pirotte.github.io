@@ -263,7 +263,7 @@ export default function ResumePage() {
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
-                    <span>Mar 2021 – Apr 2022</span>
+                    <span>Nov 2020 – Apr 2022</span>
                   </div>
                 </div>
                 <ul className="space-y-2 text-gray-700 ">
@@ -291,7 +291,7 @@ export default function ResumePage() {
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
-                    <span>Oct 2018 – Nov 2020</span>
+                    <span>Oct 2017 – Nov 2020</span>
                   </div>
                 </div>
                 <ul className="space-y-2 text-gray-700">
@@ -319,7 +319,7 @@ export default function ResumePage() {
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
-                    <span>2011 – 2018</span>
+                    <span>2011 – 2017</span>
                   </div>
                 </div>
                 <ul className="space-y-2 text-gray-700">
@@ -357,8 +357,8 @@ export default function ResumePage() {
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Language</h3>
                 <div className="space-y-4">
                   <div>
-                    <Badge className="mr-2" variant="secondary">French (Native)</Badge>
                     <Badge variant="secondary">English</Badge>
+                    <Badge className="mr-2" variant="secondary">French (Native)</Badge>
                   </div>
                 </div>
               </div>
