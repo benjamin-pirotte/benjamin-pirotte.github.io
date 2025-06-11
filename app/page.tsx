@@ -144,10 +144,6 @@ export default function ResumePage() {
                       <a href="mailto:benjamin.pirotte1@gmail.com">benjamin.pirotte1@gmail.com</a>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-green-600" />
-                      <span>+32 493 74 53 73</span>
-                    </div>
-                    <div className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-green-600" />
                       <span>Belgium (remote)</span>
                     </div>
