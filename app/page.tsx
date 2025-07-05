@@ -92,7 +92,7 @@ export default function ResumePage() {
   .border-l-4 { border-left-width: 2px !important; }
   .pl-6 { padding-left: 0.4rem !important; }
   .flex-wrap { flex-wrap: wrap !important; }
-  .gap-2 { gap: 0.125rem !important; }
+  .gap-2 { margin-left: 0.125rem !important; }
   .leading-relaxed { line-height: 1.3 !important; }
 
   /* Background and shadow adjustments */
@@ -116,7 +116,6 @@ export default function ResumePage() {
       <div className="max-w-4xl mx-auto p-6 space-y-8">
         {/* Header Section */}
         <Card className="border-0 shadow-lg print-main-section">
-          {/* Print Button */}
           <CardContent className="p-8">
             <div>
               <div className="flex  flex-row gap-6 items-start">
@@ -127,7 +126,7 @@ export default function ResumePage() {
                   </h2>
                   <div className="text-gray-600 eading-relaxed">
                     <p className="mb-6">
-                        Results-driven Product Manager with 15+ years of experience building products that solve real customer problems. Former software engineer turned product leader, driven by the belief that technology is just a means to deliver outcomes. <br/> I thrive in collaborative environments where customer impact, business goals, technical excellence, ownership, and autonomy drive success.
+                        Results-driven Product Manager with 15+ years of experience building products that solve real customer problems. Former software engineer turned product leader, driven by the belief that technology is just a means to deliver outcomes. I thrive in collaborative environments where customer impact, business goals, technical excellence, ownership, and autonomy drive success.
                     </p>
                   </div>
                 </div>
@@ -154,7 +153,7 @@ export default function ResumePage() {
                   </div>
                 </div>
                 <div className="flex-0 justify-end print:hidden">
-                  <Button onClick={handlePrint} className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700">                    
+                  <Button onClick={handlePrint} style={{marginTop: -20}} className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700">                    
                     <Printer className="w-4 h-4" />
                     Save Resume
                   </Button>
@@ -177,8 +176,8 @@ export default function ResumePage() {
                 <h4 className="font-semibold text-gray-800">Product Strategy</h4>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">Product Vision</Badge>
-                  <Badge variant="secondary">OKR definition</Badge>
-                  <Badge variant="secondary">Value-based prioritization</Badge>
+                  <Badge variant="secondary">OKR Definition</Badge>
+                  <Badge variant="secondary">Value-based Prioritization</Badge>
                   <Badge variant="secondary">Roadmapping</Badge>
                 </div>
               </div>
@@ -195,7 +194,7 @@ export default function ResumePage() {
                 <h4 className="font-semibold text-gray-800">Product Delivery</h4>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">Lean Development</Badge>
-                  <Badge variant="secondary">Agile frameworks </Badge>
+                  <Badge variant="secondary">Agile Frameworks </Badge>
                   <Badge variant="secondary">Workflow Optimization</Badge>                 
                 </div>
               </div>
@@ -204,7 +203,7 @@ export default function ResumePage() {
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">SQL</Badge>
                   <Badge variant="secondary">Python</Badge>
-                  <Badge variant="secondary">Frontend technology</Badge>
+                  <Badge variant="secondary">Frontend Development</Badge>
                   <Badge variant="secondary">API Integration</Badge>
                   <Badge variant="secondary">Data Integration</Badge>
                 </div>
@@ -227,7 +226,7 @@ export default function ResumePage() {
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Product Manager</h4>
-                    <p className="text-blue-600 font-medium"><a target="_blank" href="https://soda.io">Soda</a></p>
+                    <p className="text-blue-600 font-medium"><a target="_blank" href="https://soda.io">Soda</a> (data quality solution)</p>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
@@ -237,15 +236,15 @@ export default function ResumePage() {
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start gap-2">
                     <Target className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
-                    <span>As the product organization was in its early stages, I helped accelerate delivery, establish structure and processes, and create feedback loops with customers, shifting prioritization from gut feeling to a value-driven approach.</span>
+                    <span>As Soda is scaling up, I helped establish structure and processes that accelerated delivery, and created feedback loops with customers, shifting prioritization from gut feeling to a value-driven approach.</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <TrendingUp className="w-4 h-4 mt-1 text-green-600 flex-shrink-0" />
-                    <span>Soda’s initial focus was on the engineering persona. I led the development of a commercial product offering for business users, helping grow the customer base by over 10x.</span>
+                    <span>Working closely with prospects and customers, I led the development of a commercial product offering for business users that helped grow the customer base by over 10x.</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <ChartGantt className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
-                    <span>Currently, I’m leading the next-generation of Soda’s product, designed to bridge business and engineering needs with a streamlined model that drives faster adoption, reduces onboarding costs, and ultimately supports product-led growth.</span>
+                    <span>Currently, I’m leading Soda's next-generation product development, designed to bridge business and engineering needs with a streamlined model that drives faster adoption, reduces onboarding costs, and ultimately supports product-led growth.</span>
                   </li>
                 </ul>
               </div>
@@ -255,7 +254,7 @@ export default function ResumePage() {
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Head of Product</h4>
-                    <p className="text-blue-600 font-medium"><a target="_blank" href="https://www.ricemedia.co/aaqua-failed-startup-singapore/">Aaqua</a></p>
+                    <p className="text-blue-600 font-medium"><a target="_blank" href="https://www.ricemedia.co/aaqua-failed-startup-singapore/">Aaqua</a> (community driven social media)</p>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
@@ -265,15 +264,11 @@ export default function ResumePage() {
                 <ul className="space-y-2 text-gray-700 ">
                   <li className="flex items-start gap-2">
                     <Target className="w-4 h-4 mt-1 text-green-600 flex-shrink-0" />
-                    <span>For a new global social platform focused on the Asian market (Singapore based), I defined and led the Trust & Safety product strategy alongside the T&S expert team. I collaborated with creators and partners to build tools empowering them to manage communities..</span>
+                    <span>Defined and led product strategy focusing on Trust & Safety alongside experts and field teams, prior to launching the new social platform in Asia. I collaborated with creators and partners and built tools empowered them to manage communities.</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <TrendingDown className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
-                    <span>The project was ultimately discontinued shortly after I left due to organizational challenges, and the company ceased operations before launch.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <SmilePlus className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
-                    <span>On a personal note, it’s where I met my wife—so while the product didn’t ship, it led to my greatest project.</span>
+                    <span>Scaled the product and engineering team from 10 to 100, and led the development of processes, a global roadmap, and team-driven OKRs that enabled smooth collaboration between teams.</span>
                   </li>
                 </ul>
               </div>
@@ -283,7 +278,7 @@ export default function ResumePage() {
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Product Manager</h4>
-                    <p className="text-blue-600 font-medium"><a target="_blank" href="https://collibra.com">Collibra</a></p>
+                    <p className="text-blue-600 font-medium"><a target="_blank" href="https://collibra.com">Collibra</a> (data intelligence platform)</p>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
@@ -297,11 +292,11 @@ export default function ResumePage() {
                   </li>
                   <li className="flex items-start gap-2">
                     <Target className="w-4 h-4 mt-1 text-green-600 flex-shrink-0" />
-                    <span>Drove product development for Collibra’s Data Intelligence Platform, enabling integration and extensibility. This platform allowed Collibra to respond quickly to market demands and empowered teams to deliver custom capabilities that helped close strategic, high-value deals (worth over $1 million in ARR).</span>
+                    <span>Led product development for Collibra’s Data Intelligence Platform, enabling integration and extensibility, which allowed Collibra to respond quickly to market demands and empowered teams to deliver custom capabilities that helped close strategic, high-value deals (worth over $1 million in ARR).</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <FastForward className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
-                    <span>Led the team’s shift from no front-end tests to full coverage (unit and end-to-end), enabling continuous integration and deployment—critical for Collibra’s transition from on-premise to a cloud-based platform. This eliminated month-long code freezes and manual testing bottlenecks.</span>
+                    <span>Created the shift from no frontend tests to full coverage, enabling continuous integration and deployment. <br/> This eliminated month-long code freezes and manual testing bottlenecks.</span>
                   </li>
                 </ul>
               </div>
@@ -311,7 +306,7 @@ export default function ResumePage() {
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Front-End Developer - E-marketing</h4>
-                    <p className="text-blue-600 font-medium"><a href="https://www.idweaver.com/" target="blank">IDWeaver</a>, <a href="https://www.synchrone.be/" target="blank">Synchrone</a>, Outlet-Avenue </p>
+                    <p className="text-blue-600 font-medium"><a href="https://www.idweaver.com/" target="blank">IDWeaver</a>, <a href="https://www.synchrone.be/" target="blank">Synchrone</a>, Outlet-Avenue, (various agencies)</p>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
@@ -321,7 +316,7 @@ export default function ResumePage() {
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start gap-2">
                     <FileJson className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
-                    Worked in digital agencies to design and develop websites across diverse industries, including e-commerce platforms, crowdfunding platforms, social networks, and marketing websites. Also supported e-marketing efforts through email campaigns and digital ads.
+                    Designed and developed websites across diverse industries, including e-commerce platforms, crowdfunding platforms, social networks, and marketing websites. Also supported marketing efforts through email campaigns and digital ads.
 
                   </li>
                 </ul>
@@ -353,7 +348,7 @@ export default function ResumePage() {
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Language</h3>
                 <div className="space-y-4">
                   <div>
-                    <Badge variant="secondary">English</Badge>
+                    <Badge variant="secondary">English (Fluent)</Badge>
                     <Badge className="mr-2" variant="secondary">French (Native)</Badge>
                   </div>
                 </div>
