@@ -6,24 +6,17 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import {
   Mail,
-  Phone,
   MapPin,
   Linkedin,
   Calendar,
   Building,
   TrendingUp,
-  Users,
-  Database,
-  BarChart3,
   Target,
-  Lightbulb,
   Printer,
   Globe,
-  TrendingDown,
-  FileJson,
+  GraduationCap,
+  Goal,
   FastForward,
-  SmilePlus,
-  ChartGantt,
 } from "lucide-react"
 
 export default function ResumePage() {
@@ -62,7 +55,6 @@ export default function ResumePage() {
   .text-lg { font-size: 0.8rem !important; }
 
   /* Spacing adjustments */
-  .p-8, .p-6 { padding: 0.4rem !important; }
   .mb-6, .mb-4 { margin-bottom: 0.4rem !important; }
 
   .space-y-8 > * + * { margin-top: 0.8rem !important; } /* Increased for section separation */
@@ -77,6 +69,13 @@ export default function ResumePage() {
   .card-content, .CardContent, .print-padded-section {
     padding: 0.5rem !important;
   }
+  /* Core Competencies & Professional Experience: same padding/title spacing as web */
+  .print-section-with-title {
+    padding: 2rem !important;
+  }
+  .print-section-with-title > h3 {
+    margin-bottom: 1.5rem !important;
+  }
 
   /* Margin between main sections like Core Competencies and Professional Experience */
   .print-main-section + .print-main-section {
@@ -89,8 +88,46 @@ export default function ResumePage() {
   /* Layout refinements */
   .max-w-4xl { max-width: 100% !important; }
   .grid-cols-4, .md\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  /* Core Competencies: 4 columns in print, no padding around badge blocks */
+  .print-grid-4-cols {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+  }
+  .print-grid-4-cols > * {
+    padding: 0 !important;
+  }
+  /* Core Competencies: no extra spacing on badge rows (gap-2 is overridden globally in print) */
+  .print-grid-4-cols .flex-wrap.gap-2 {
+    margin-left: 0 !important;
+    gap: 0.25rem !important;
+    padding: 0 !important;
+  }
+  .print-grid-4-cols h4 {
+    padding-bottom: 0.35rem !important;
+  }
+  /* Keep Education & Interests as 3 equal columns in print */
+  .print-grid-3-cols {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+    align-items: stretch !important;
+  }
   .border-l-4 { border-left-width: 2px !important; }
   .pl-6 { padding-left: 0.4rem !important; }
+  /* Job sections: more padding in print (closer to web look) */
+  .print-job-section {
+    padding-left: 1rem !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+  /* Job title (h4) larger than company line (p) in print, same as web */
+  .print-job-section h4 {
+    font-size: 1.05rem !important;
+  }
+  .print-job-section > div > div > p {
+    font-size: 0.9rem !important;
+  }
   .flex-wrap { flex-wrap: wrap !important; }
   .gap-2 { margin-left: 0.125rem !important; }
   .leading-relaxed { line-height: 1.3 !important; }
@@ -109,6 +146,9 @@ export default function ResumePage() {
   .no-break {
     break-inside: avoid;
   }
+
+  /* Apply last so p-8/p-6 override other padding rules in print */
+  .p-8, .p-6 { padding: 0.8rem !important; }
 }
 
 
@@ -144,7 +184,7 @@ export default function ResumePage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-green-600" />
-                      <span>Belgium (remote)</span>
+                      <span>Belgium</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Linkedin className="w-4 h-4 text-green-600" />
@@ -166,12 +206,12 @@ export default function ResumePage() {
 
         {/* Core Skills */}
         <Card className="border-0 shadow-lg print-main-section ">
-          <CardContent className="p-8">
+          <CardContent className="p-8 print-section-with-title">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <Target className="w-6 h-6 text-blue-600" />
+              <Target className="w-5 h-5 text-blue-600 flex-shrink-0" />
               Core Competencies
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 print-grid-4-cols">
               <div className="space-y-3 print-padded-section">
                 <h4 className="font-semibold text-gray-800">Product Strategy</h4>
                 <div className="flex flex-wrap gap-2">
@@ -214,15 +254,15 @@ export default function ResumePage() {
 
         {/* Experience */}
         <Card className="border-0 shadow-lg print-padded-section">
-          <CardContent className="p-8">
+          <CardContent className="p-8 print-section-with-title">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <Building className="w-6 h-6 text-blue-600" />
+              <Building className="w-5 h-5 text-blue-600 flex-shrink-0" />
               Professional Experience
             </h3>
 
             <div className="space-y-8">
               {/* Job 1 */}
-              <div className="border-l-4 border-blue-500 pl-6">
+              <div className="border-l-4 border-blue-500 pl-6 print-job-section">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Product Manager</h4>
@@ -243,14 +283,14 @@ export default function ResumePage() {
                     <span>Working closely with prospects and customers, I led the development of a commercial product offering for business users that helped grow the customer base by over 10x.</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <ChartGantt className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
+                    <Goal className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
                     <span>Currently, I’m leading Soda's next-generation product development, designed to bridge business and engineering needs with a streamlined model that drives faster adoption, reduces onboarding costs, and ultimately supports product-led growth.</span>
                   </li>
                 </ul>
               </div>
 
               {/* Job 2 */}
-              <div className="border-l-4 border-blue-500 pl-6 print-padded-section">
+              <div className="border-l-4 border-blue-500 pl-6 print-job-section">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Head of Product</h4>
@@ -263,18 +303,18 @@ export default function ResumePage() {
                 </div>
                 <ul className="space-y-2 text-gray-700 ">
                   <li className="flex items-start gap-2">
-                    <Target className="w-4 h-4 mt-1 text-green-600 flex-shrink-0" />
+                    <Target className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
                     <span>Defined and led product strategy focusing on Trust & Safety alongside experts and field teams, prior to launching the new social platform in Asia. I collaborated with creators and partners and built tools empowered them to manage communities.</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <TrendingDown className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
+                    <TrendingUp className="w-4 h-4 mt-1 text-green-600 flex-shrink-0" />
                     <span>Scaled the product and engineering team from 10 to 100, and led the development of processes, a global roadmap, and team-driven OKRs that enabled smooth collaboration between teams.</span>
                   </li>
                 </ul>
               </div>
 
               {/* Job 3 */}
-              <div className="border-l-4 border-blue-500 pl-6 print-padded-section">
+              <div className="border-l-4 border-blue-500 pl-6 print-job-section">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Product Manager</h4>
@@ -287,26 +327,26 @@ export default function ResumePage() {
                 </div>
                 <ul className="space-y-2 text-gray-700">
                    <li className="flex items-start gap-2">
-                    <ChartGantt className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
+                    <Target className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
                     <span>I started at Collibra as a Front-End Engineer, then transitioned into Product Management after one year, driven by a desire to focus on product outcomes rather than technology alone. </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Target className="w-4 h-4 mt-1 text-green-600 flex-shrink-0" />
+                    <TrendingUp className="w-4 h-4 mt-1 text-green-600  flex-shrink-0" />
                     <span>Led product development for Collibra’s Data Intelligence Platform, enabling integration and extensibility, which allowed Collibra to respond quickly to market demands and empowered teams to deliver custom capabilities that helped close strategic, high-value deals (worth over $1 million in ARR).</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <FastForward className="w-4 h-4 mt-1 text-purple-600 flex-shrink-0" />
-                    <span>Created the shift from no frontend tests to full coverage, enabling continuous integration and deployment. <br/> This eliminated month-long code freezes and manual testing bottlenecks.</span>
+                    <span>Drove a shift left for application testing enabling continuous integration and deployment. This eliminated month-long code freezes and manual testing bottlenecks.</span>
                   </li>
                 </ul>
               </div>
 
               {/* Job 4 */}
-              <div className="border-l-4 border-blue-500 pl-6 print-padded-section">
+              <div className="border-l-4 border-blue-500 pl-6 print-job-section">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                   <div>
                     <h4 className="text-xl font-semibold text-gray-900">Front-End Developer - E-marketing</h4>
-                    <p className="text-blue-600 font-medium"><a href="https://www.idweaver.com/" target="blank">IDWeaver</a>, <a href="https://www.synchrone.be/" target="blank">Synchrone</a>, Outlet-Avenue, (various agencies)</p>
+                    <p className="text-blue-600 font-medium"><a href="https://www.idweaver.com/" target="blank">IDWeaver</a>, <a href="https://www.synchrone.be/" target="blank">Synchrone</a>, Outlet-Avenue (various agencies)</p>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
@@ -315,9 +355,8 @@ export default function ResumePage() {
                 </div>
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start gap-2">
-                    <FileJson className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
-                    Designed and developed websites across diverse industries, including e-commerce platforms, crowdfunding platforms, social networks, and marketing websites. Also supported marketing efforts through email campaigns and digital ads.
-
+                    <Target className="w-4 h-4 mt-1 text-blue-600 flex-shrink-0" />
+                    <span>Designed and developed websites across diverse industries, including e-commerce platforms, crowdfunding platforms, social networks, and marketing websites. Also supported marketing efforts through email campaigns and digital ads.</span>
                   </li>
                 </ul>
               </div>
@@ -326,11 +365,14 @@ export default function ResumePage() {
         </Card>
 
         {/* Education & Interests */}
-        <div className="grid grid-cols-3 gap-6 items-stretch">
-          <Card className="border-0 shadow-lg main-section h-full flex flex-col">
-            <CardContent className="p-6 flex flex-col flex-1">
+        <div className="grid grid-cols-2 gap-6 items-stretch print-grid-2-cols print-main-section">
+          <Card className="border-0 shadow-lg h-full flex flex-col print-three-col-card">
+            <CardContent className="p-6 flex flex-col flex-1 print-padded-section">
               <div className="flex flex-col flex-grow h-full">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Education</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <GraduationCap className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  Education
+                </h3>
                 <div className="space-y-4">
                   <div>
                     <h4 className="font-semibold text-gray-800">Multimedia design</h4>
@@ -342,28 +384,18 @@ export default function ResumePage() {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg main-section h-full flex flex-col">
-            <CardContent className="p-6 flex flex-col flex-1">
+          <Card className="border-0 shadow-lg print-main-section h-full flex flex-col">
+            <CardContent className="p-6 flex flex-col flex-1 print-padded-section">
               <div className="flex flex-col flex-grow h-full">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Language</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  Language
+                </h3>
                 <div className="space-y-4">
                   <div>
                     <Badge variant="secondary">English (Fluent)</Badge>
                     <Badge className="mr-2" variant="secondary">French (Native)</Badge>
                   </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 shadow-lg main-section h-full flex flex-col">
-            <CardContent className="p-6 flex flex-col flex-1">
-              <div className="flex flex-col flex-grow h-full">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Interests</h3>
-                <div className="space-y-3">
-                  <Badge variant="secondary">Raising a little human</Badge>
-                  <Badge variant="secondary">Exploring the world and different cultures</Badge>
-                  <Badge variant="secondary">Hiking and nature</Badge>
-                  <Badge variant="secondary">Music and live experience</Badge>
                 </div>
               </div>
             </CardContent>
