@@ -1,0 +1,2 @@
+[functions.send-contract-email]
+verify_jwt = false

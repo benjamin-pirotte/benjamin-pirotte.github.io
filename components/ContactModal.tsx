@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { supabase } from '@/lib/supabase'
 
 interface Props {
   open: boolean
@@ -10,6 +11,7 @@ interface Props {
 export default function ContactModal({ open, onClose }: Props) {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
@@ -17,12 +19,29 @@ export default function ContactModal({ open, onClose }: Props) {
     return () => document.removeEventListener('keydown', handler)
   }, [open, onClose])
 
+  // Reset form when modal opens
+  useEffect(() => {
+    if (open) {
+      setEmail('')
+      setMessage('')
+      setStatus('idle')
+    }
+  }, [open])
+
   if (!open) return null
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    window.location.href = `mailto:benjamin.pirotte1@gmail.com?subject=Message from ${encodeURIComponent(email)}&body=${encodeURIComponent(message)}`
-    onClose()
+    setStatus('sending')
+    try {
+      const { error } = await supabase.functions.invoke('send-contract-email', {
+        body: { email, message },
+      })
+      if (error) throw error
+      setStatus('sent')
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -43,36 +62,48 @@ export default function ContactModal({ open, onClose }: Props) {
             </svg>
           </button>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Your email</label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400 transition-colors"
-            />
+
+        {status === 'sent' ? (
+          <div className="py-8 text-center">
+            <p className="text-gray-900 font-medium mb-1">Message sent!</p>
+            <p className="text-gray-500 text-sm">I'll get back to you soon.</p>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-            <textarea
-              required
-              rows={5}
-              value={message}
-              onChange={e => setMessage(e.target.value)}
-              placeholder="What's on your mind?"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400 transition-colors resize-none"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-gray-900 text-white text-sm font-medium py-2.5 rounded-lg hover:bg-gray-700 transition-colors"
-          >
-            Send message
-          </button>
-        </form>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Your email</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400 transition-colors"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+              <textarea
+                required
+                rows={5}
+                value={message}
+                onChange={e => setMessage(e.target.value)}
+                placeholder="What's on your mind?"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400 transition-colors resize-none"
+              />
+            </div>
+            {status === 'error' && (
+              <p className="text-sm text-red-500">Something went wrong. Please try again.</p>
+            )}
+            <button
+              type="submit"
+              disabled={status === 'sending'}
+              className="w-full bg-gray-900 text-white text-sm font-medium py-2.5 rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50"
+            >
+              {status === 'sending' ? 'Sending…' : 'Send message'}
+            </button>
+          </form>
+        )}
       </div>
     </div>
   )
