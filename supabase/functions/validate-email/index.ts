@@ -13,6 +13,18 @@ function generateKey(length = 32): string {
   return Array.from(bytes).map(b => chars[b % chars.length]).join('')
 }
 
+const FREE_EMAIL_DOMAINS = new Set([
+  'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.co.uk', 'yahoo.fr', 'yahoo.de',
+  'yahoo.es', 'yahoo.it', 'yahoo.co.jp', 'ymail.com', 'rocketmail.com',
+  'hotmail.com', 'outlook.com', 'live.com', 'msn.com', 'live.co.uk', 'live.fr',
+  'icloud.com', 'me.com', 'mac.com', 'aol.com',
+  'protonmail.com', 'proton.me', 'pm.me',
+  'tutanota.com', 'tutanota.de', 'tutamail.com', 'tuta.io',
+  'mail.com', 'gmx.com', 'gmx.net', 'gmx.de',
+  'yandex.com', 'yandex.ru', 'fastmail.com', 'fastmail.fm',
+  'hey.com', 'zoho.com', 'inbox.com', 'mail.ru', 'yopmail.com',
+])
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: CORS_HEADERS })
@@ -23,7 +35,7 @@ serve(async (req) => {
   }
 
   try {
-    const { email, url } = await req.json()
+    const { email, url, firstMessage } = await req.json()
 
     if (!email || !url) {
       return new Response(
@@ -36,6 +48,15 @@ serve(async (req) => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return new Response(
         JSON.stringify({ error: 'Invalid email address' }),
+        { status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Block free/generic email providers
+    const domain = email.split('@')[1]?.toLowerCase()
+    if (FREE_EMAIL_DOMAINS.has(domain) && email !== 'benjamin.pirotte1@gmail.com') {
+      return new Response(
+        JSON.stringify({ error: 'Please use a company email address.' }),
         { status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } }
       )
     }
@@ -62,7 +83,9 @@ serve(async (req) => {
     if (dbError) throw new Error(`DB error: ${dbError.message}`)
 
     // Build confirmation link
-    const confirmUrl = `${url}?email=${encodeURIComponent(email)}&key=${encodeURIComponent(key)}`
+    const confirmUrl = firstMessage
+      ? `${url}?email=${encodeURIComponent(email)}&key=${encodeURIComponent(key)}&msg=${encodeURIComponent(firstMessage)}`
+      : `${url}?email=${encodeURIComponent(email)}&key=${encodeURIComponent(key)}`
 
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
