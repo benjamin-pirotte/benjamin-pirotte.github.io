@@ -33,7 +33,7 @@ export default function AvatarChat() {
   const cardRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  const [stage, setStage] = useState<Stage>('gate')
+  const [stage, setStage] = useState<Stage>('verifying')
   const [emailInput, setEmailInput] = useState('')
   const [gateError, setGateError] = useState('')
   const [gateLoading, setGateLoading] = useState(false)
@@ -54,7 +54,6 @@ export default function AvatarChat() {
     const email = params.get('email')
     const key = params.get('key')
     if (email && key) {
-      setStage('verifying')
       fetch(`${SUPABASE_URL}/confirm-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -70,7 +69,9 @@ export default function AvatarChat() {
             setStage('chat')
           }
         })
-        .catch(() => {/* silent — user stays on gate */})
+        .catch(() => setStage('gate'))
+    } else {
+      setStage('gate')
     }
   }, [])
 
@@ -222,14 +223,14 @@ export default function AvatarChat() {
             <svg className="animate-spin text-gray-400" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
             </svg>
-            <p className="text-sm text-gray-500">Verifying your email…</p>
+            <p className="text-sm text-gray-500">Loading…</p>
           </div>
         )}
 
         {/* Gate: email input */}
         {stage === 'gate' && (
           <div className="flex flex-col items-center gap-3 p-6 text-center">
-            <p className="text-sm text-gray-700 font-medium">Enter your email to start chatting</p>
+            <p className="text-sm text-gray-700 font-medium">Want to know me better? Enter your email to start chatting with my virtual copy.</p>
             <p className="text-xs text-gray-400">You&apos;ll receive a quick confirmation link.</p>
             <div className="flex gap-2 w-full mt-1">
               <input
