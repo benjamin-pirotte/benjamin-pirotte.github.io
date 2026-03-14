@@ -217,7 +217,7 @@ export default function AvatarChat() {
           <p className="relative z-10 text-xs text-gray-500 mt-0.5">Product Management</p>
         </div>
 
-        <div style={{ minHeight: '240px' }} className="flex flex-col items-center justify-center">
+        <div style={{ minHeight: '240px' }} className="flex flex-col justify-center">
 
         {/* Verifying: confirming email from URL params */}
         {stage === 'verifying' && (
