@@ -11,14 +11,17 @@ const SUGGESTIONS = [
   'What do you specialize in?',
 ]
 
-const REPLIES: Record<string, string> = {
-  "What's your background?":
-    "I'm a Senior PM with 15+ years of experience — started as a front-end engineer, then moved into product at Collibra, Aaqua, and Soda. I specialize in B2B data products and AI features.",
-  'Are you available?':
-    "Yes, I'm currently open to new opportunities. Feel free to send me a message or reach out on LinkedIn!",
-  'What do you specialize in?':
-    'My sweet spot is B2B SaaS — especially data management, AI/ML product development, and enterprise go-to-market. I work best with technical teams building for both developer and business personas.',
-}
+const FREE_EMAIL_DOMAINS = new Set([
+  'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.co.uk', 'yahoo.fr', 'yahoo.de',
+  'yahoo.es', 'yahoo.it', 'yahoo.co.jp', 'ymail.com', 'rocketmail.com',
+  'hotmail.com', 'outlook.com', 'live.com', 'msn.com', 'live.co.uk', 'live.fr',
+  'icloud.com', 'me.com', 'mac.com', 'aol.com',
+  'protonmail.com', 'proton.me', 'pm.me',
+  'tutanota.com', 'tutanota.de', 'tutamail.com', 'tuta.io',
+  'mail.com', 'gmx.com', 'gmx.net', 'gmx.de',
+  'yandex.com', 'yandex.ru', 'fastmail.com', 'fastmail.fm',
+  'hey.com', 'zoho.com', 'inbox.com', 'mail.ru',
+])
 
 interface Message {
   role: 'user' | 'assistant'
@@ -32,9 +35,11 @@ const LS_KEY = 'bp_chat_email'
 export default function AvatarChat() {
   const cardRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
 
   const [stage, setStage] = useState<Stage>('verifying')
   const [emailInput, setEmailInput] = useState('')
+  const [confirmedEmail, setConfirmedEmail] = useState('')
   const [gateError, setGateError] = useState('')
   const [gateLoading, setGateLoading] = useState(false)
 
@@ -42,11 +47,14 @@ export default function AvatarChat() {
     { role: 'assistant', text: "Hi 👋 I'm Benjamin. Ask me anything or pick a question below." },
   ])
   const [input, setInput] = useState('')
+  const [isTyping, setIsTyping] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
 
   // On mount: check localStorage or URL confirmation params
   useEffect(() => {
-    if (localStorage.getItem(LS_KEY)) {
+    const stored = localStorage.getItem(LS_KEY)
+    if (stored) {
+      setConfirmedEmail(stored)
       setStage('chat')
       return
     }
@@ -63,6 +71,7 @@ export default function AvatarChat() {
         .then(data => {
           if (data.success) {
             localStorage.setItem(LS_KEY, email)
+            setConfirmedEmail(email)
             // Clean URL params without reload
             const clean = window.location.pathname
             window.history.replaceState({}, '', clean)
@@ -74,6 +83,12 @@ export default function AvatarChat() {
       setStage('gate')
     }
   }, [])
+
+  // Auto-scroll chat to bottom
+  useEffect(() => {
+    const el = messagesContainerRef.current
+    if (el) el.scrollTop = el.scrollHeight
+  }, [messages, isTyping])
 
   // Particle canvas
   useEffect(() => {
@@ -165,6 +180,11 @@ export default function AvatarChat() {
       setGateError('Please enter a valid email address.')
       return
     }
+    const domain = trimmed.split('@')[1]?.toLowerCase()
+    if (FREE_EMAIL_DOMAINS.has(domain) && trimmed !== 'benjamin.pirotte1@gmail.com') {
+      setGateError('Please use a company email address.')
+      return
+    }
     setGateError('')
     setGateLoading(true)
     try {
@@ -184,16 +204,29 @@ export default function AvatarChat() {
     }
   }
 
-  const sendMessage = (text: string) => {
+  const sendMessage = async (text: string) => {
     const trimmed = text.trim()
-    if (!trimmed) return
-    const reply = REPLIES[trimmed] ?? "I'll integrate a smart AI here soon — for now, feel free to email me directly!"
-    setMessages(prev => [
-      ...prev,
-      { role: 'user', text: trimmed },
-      { role: 'assistant', text: reply },
-    ])
+    if (!trimmed || isTyping) return
+    setMessages(prev => [...prev, { role: 'user', text: trimmed }])
     setInput('')
+    setIsTyping(true)
+    try {
+      const res = await fetch(`${SUPABASE_URL}/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: confirmedEmail, message: trimmed }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? 'Something went wrong')
+      setMessages(prev => [...prev, { role: 'assistant', text: data.reply }])
+    } catch (err) {
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        text: err instanceof Error ? err.message : 'Something went wrong. Please try again.',
+      }])
+    } finally {
+      setIsTyping(false)
+    }
   }
 
   return (
@@ -270,7 +303,7 @@ export default function AvatarChat() {
         {/* Chat */}
         {stage === 'chat' && (
           <div className="flex flex-col p-4 gap-3">
-            <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+            <div ref={messagesContainerRef} className="space-y-2 max-h-52 overflow-y-auto pr-1">
               {messages.map((m, i) => (
                 <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div
@@ -284,9 +317,20 @@ export default function AvatarChat() {
                   </div>
                 </div>
               ))}
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="bg-gray-100 text-gray-400 text-sm px-3 py-2 rounded-xl rounded-bl-sm">
+                    <span className="inline-flex gap-0.5">
+                      <span className="animate-bounce" style={{ animationDelay: '0ms' }}>·</span>
+                      <span className="animate-bounce" style={{ animationDelay: '150ms' }}>·</span>
+                      <span className="animate-bounce" style={{ animationDelay: '300ms' }}>·</span>
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {messages.length <= 2 && (
+            {messages.length === 1 && (
               <div className="flex flex-wrap gap-1.5">
                 {SUGGESTIONS.map(s => (
                   <button
@@ -307,11 +351,13 @@ export default function AvatarChat() {
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter') sendMessage(input) }}
                 placeholder="Type a message…"
-                className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-gray-400 transition-colors"
+                disabled={isTyping}
+                className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-gray-400 transition-colors disabled:opacity-50"
               />
               <button
                 onClick={() => sendMessage(input)}
-                className="bg-gray-900 text-white text-sm px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+                disabled={isTyping}
+                className="bg-gray-900 text-white text-sm px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
