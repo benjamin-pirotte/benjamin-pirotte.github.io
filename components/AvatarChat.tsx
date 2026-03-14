@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import ContactModal from './ContactModal'
 
 const SUGGESTIONS = [
@@ -25,11 +25,79 @@ interface Message {
 
 export default function AvatarChat() {
   const cardRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', text: "Hi 👋 I'm Benjamin. Ask me anything or pick a question below." },
   ])
   const [input, setInput] = useState('')
   const [contactOpen, setContactOpen] = useState(false)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    let lw = 0, lh = 0
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1
+      lw = canvas.offsetWidth
+      lh = canvas.offsetHeight
+      canvas.width  = lw * dpr
+      canvas.height = lh * dpr
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+    }
+    resize()
+    window.addEventListener('resize', resize)
+
+    const N = 38
+    const CONNECT = 80
+    type Pt = { x: number; y: number; vx: number; vy: number }
+    const pts: Pt[] = Array.from({ length: N }, () => ({
+      x:  Math.random() * lw,
+      y:  Math.random() * lh,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+    }))
+
+    let raf: number
+    const draw = () => {
+      raf = requestAnimationFrame(draw)
+      ctx.clearRect(0, 0, lw, lh)
+      for (const p of pts) {
+        p.x += p.vx; p.y += p.vy
+        if (p.x < 0 || p.x > lw) p.vx *= -1
+        if (p.y < 0 || p.y > lh) p.vy *= -1
+      }
+      for (let i = 0; i < N; i++) {
+        for (let j = i + 1; j < N; j++) {
+          const dx = pts[i].x - pts[j].x
+          const dy = pts[i].y - pts[j].y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < CONNECT) {
+            ctx.beginPath()
+            ctx.moveTo(pts[i].x, pts[i].y)
+            ctx.lineTo(pts[j].x, pts[j].y)
+            ctx.strokeStyle = `rgba(150,150,160,${(1 - dist / CONNECT) * 0.35})`
+            ctx.lineWidth = 0.8
+            ctx.stroke()
+          }
+        }
+      }
+      for (const p of pts) {
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(140,140,155,0.55)'
+        ctx.fill()
+      }
+    }
+    draw()
+
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', resize)
+    }
+  }, [])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current
@@ -68,14 +136,15 @@ export default function AvatarChat() {
         className="w-full bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden"
       >
         {/* Avatar */}
-        <div className="flex flex-col items-center py-7 border-b border-gray-100 bg-gray-50">
+        <div className="relative flex flex-col items-center py-7 border-b border-gray-100 bg-gray-50 overflow-hidden">
+          <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
           <img
             src="/profile.png"
             alt="Benjamin Pirotte"
-            className="w-24 h-24 rounded-full object-cover shadow-md"
+            className="relative z-10 w-24 h-24 rounded-full object-cover shadow-md"
           />
-          <p className="mt-3 font-semibold text-gray-900">Benjamin Pirotte</p>
-          <p className="text-xs text-gray-500 mt-0.5">Senior Product Manager</p>
+          <p className="relative z-10 mt-3 font-semibold text-gray-900">Benjamin Pirotte</p>
+          <p className="relative z-10 text-xs text-gray-500 mt-0.5">Product Management</p>
         </div>
 
         {/* Chat */}
