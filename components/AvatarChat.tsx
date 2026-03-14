@@ -217,6 +217,8 @@ export default function AvatarChat() {
           <p className="relative z-10 text-xs text-gray-500 mt-0.5">Product Management</p>
         </div>
 
+        <div style={{ minHeight: '240px' }} className="flex flex-col items-center justify-center">
+
         {/* Verifying: confirming email from URL params */}
         {stage === 'verifying' && (
           <div className="flex flex-col items-center gap-3 p-6 text-center">
@@ -325,6 +327,8 @@ export default function AvatarChat() {
             </button>
           </div>
         )}
+
+        </div>{/* min-height wrapper */}
       </div>
       <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </>
