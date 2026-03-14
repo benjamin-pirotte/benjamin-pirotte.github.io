@@ -3,6 +3,8 @@
 import { useRef, useState, useEffect } from 'react'
 import ContactModal from './ContactModal'
 
+const SUPABASE_URL = 'https://oupxuaillphhvtdtmgih.supabase.co/functions/v1'
+
 const SUGGESTIONS = [
   "What's your background?",
   'Are you available?',
@@ -23,15 +25,56 @@ interface Message {
   text: string
 }
 
+type Stage = 'gate' | 'pending' | 'verifying' | 'chat'
+
+const LS_KEY = 'bp_chat_email'
+
 export default function AvatarChat() {
   const cardRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  const [stage, setStage] = useState<Stage>('gate')
+  const [emailInput, setEmailInput] = useState('')
+  const [gateError, setGateError] = useState('')
+  const [gateLoading, setGateLoading] = useState(false)
+
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', text: "Hi 👋 I'm Benjamin. Ask me anything or pick a question below." },
   ])
   const [input, setInput] = useState('')
   const [contactOpen, setContactOpen] = useState(false)
 
+  // On mount: check localStorage or URL confirmation params
+  useEffect(() => {
+    if (localStorage.getItem(LS_KEY)) {
+      setStage('chat')
+      return
+    }
+    const params = new URLSearchParams(window.location.search)
+    const email = params.get('email')
+    const key = params.get('key')
+    if (email && key) {
+      setStage('verifying')
+      fetch(`${SUPABASE_URL}/confirm-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, key }),
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            localStorage.setItem(LS_KEY, email)
+            // Clean URL params without reload
+            const clean = window.location.pathname
+            window.history.replaceState({}, '', clean)
+            setStage('chat')
+          }
+        })
+        .catch(() => {/* silent — user stays on gate */})
+    }
+  }, [])
+
+  // Particle canvas
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -114,6 +157,32 @@ export default function AvatarChat() {
     }
   }
 
+  const submitEmail = async () => {
+    const trimmed = emailInput.trim()
+    if (!trimmed) return
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setGateError('Please enter a valid email address.')
+      return
+    }
+    setGateError('')
+    setGateLoading(true)
+    try {
+      const confirmUrl = window.location.origin + window.location.pathname
+      const res = await fetch(`${SUPABASE_URL}/validate-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: trimmed, url: confirmUrl }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? 'Something went wrong')
+      setStage('pending')
+    } catch (err) {
+      setGateError(err instanceof Error ? err.message : 'Something went wrong')
+    } finally {
+      setGateLoading(false)
+    }
+  }
+
   const sendMessage = (text: string) => {
     const trimmed = text.trim()
     if (!trimmed) return
@@ -147,66 +216,114 @@ export default function AvatarChat() {
           <p className="relative z-10 text-xs text-gray-500 mt-0.5">Product Management</p>
         </div>
 
-        {/* Chat */}
-        <div className="flex flex-col p-4 gap-3">
-          <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
-            {messages.map((m, i) => (
-              <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div
-                  className={`max-w-[85%] text-sm px-3 py-2 rounded-xl leading-snug ${
-                    m.role === 'user'
-                      ? 'bg-gray-900 text-white rounded-br-sm'
-                      : 'bg-gray-100 text-gray-800 rounded-bl-sm'
-                  }`}
-                >
-                  {m.text}
-                </div>
-              </div>
-            ))}
+        {/* Verifying: confirming email from URL params */}
+        {stage === 'verifying' && (
+          <div className="flex flex-col items-center gap-3 p-6 text-center">
+            <svg className="animate-spin text-gray-400" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+            </svg>
+            <p className="text-sm text-gray-500">Verifying your email…</p>
           </div>
+        )}
 
-          {/* Suggestion chips */}
-          {messages.length <= 2 && (
-            <div className="flex flex-wrap gap-1.5">
-              {SUGGESTIONS.map(s => (
-                <button
-                  key={s}
-                  onClick={() => sendMessage(s)}
-                  className="text-xs border border-gray-200 rounded-full px-3 py-1 text-gray-600 hover:border-gray-400 hover:text-gray-900 transition-colors"
-                >
-                  {s}
-                </button>
+        {/* Gate: email input */}
+        {stage === 'gate' && (
+          <div className="flex flex-col items-center gap-3 p-6 text-center">
+            <p className="text-sm text-gray-700 font-medium">Enter your email to start chatting</p>
+            <p className="text-xs text-gray-400">You&apos;ll receive a quick confirmation link.</p>
+            <div className="flex gap-2 w-full mt-1">
+              <input
+                type="email"
+                value={emailInput}
+                onChange={e => setEmailInput(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') submitEmail() }}
+                placeholder="you@example.com"
+                className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-gray-400 transition-colors"
+              />
+              <button
+                onClick={submitEmail}
+                disabled={gateLoading}
+                className="bg-gray-900 text-white text-sm px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50"
+              >
+                {gateLoading ? '…' : 'Go'}
+              </button>
+            </div>
+            {gateError && <p className="text-xs text-red-500">{gateError}</p>}
+          </div>
+        )}
+
+        {/* Pending: awaiting confirmation */}
+        {stage === 'pending' && (
+          <div className="flex flex-col items-center gap-2 p-6 text-center">
+            <div className="text-2xl">📬</div>
+            <p className="text-sm font-medium text-gray-800">Check your inbox</p>
+            <p className="text-xs text-gray-500">
+              We sent a confirmation link to <span className="font-medium text-gray-700">{emailInput}</span>.
+              Click it to unlock the chat.
+            </p>
+          </div>
+        )}
+
+        {/* Chat */}
+        {stage === 'chat' && (
+          <div className="flex flex-col p-4 gap-3">
+            <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+              {messages.map((m, i) => (
+                <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div
+                    className={`max-w-[85%] text-sm px-3 py-2 rounded-xl leading-snug ${
+                      m.role === 'user'
+                        ? 'bg-gray-900 text-white rounded-br-sm'
+                        : 'bg-gray-100 text-gray-800 rounded-bl-sm'
+                    }`}
+                  >
+                    {m.text}
+                  </div>
+                </div>
               ))}
             </div>
-          )}
 
-          {/* Input */}
-          <div className="flex gap-2 mt-1">
-            <input
-              type="text"
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') sendMessage(input) }}
-              placeholder="Type a message…"
-              className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-gray-400 transition-colors"
-            />
+            {messages.length <= 2 && (
+              <div className="flex flex-wrap gap-1.5">
+                {SUGGESTIONS.map(s => (
+                  <button
+                    key={s}
+                    onClick={() => sendMessage(s)}
+                    className="text-xs border border-gray-200 rounded-full px-3 py-1 text-gray-600 hover:border-gray-400 hover:text-gray-900 transition-colors"
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div className="flex gap-2 mt-1">
+              <input
+                type="text"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') sendMessage(input) }}
+                placeholder="Type a message…"
+                className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-gray-400 transition-colors"
+              />
+              <button
+                onClick={() => sendMessage(input)}
+                className="bg-gray-900 text-white text-sm px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
+              </button>
+            </div>
+
             <button
-              onClick={() => sendMessage(input)}
-              className="bg-gray-900 text-white text-sm px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+              onClick={() => setContactOpen(true)}
+              className="text-xs text-gray-400 hover:text-gray-700 transition-colors mt-0.5 text-center"
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
-              </svg>
+              Or send me an email →
             </button>
           </div>
-
-          <button
-            onClick={() => setContactOpen(true)}
-            className="text-xs text-gray-400 hover:text-gray-700 transition-colors mt-0.5 text-center"
-          >
-            Or send me an email →
-          </button>
-        </div>
+        )}
       </div>
       <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </>
