@@ -1,7 +1,7 @@
 ---
-title: How to Prototype a Feature in a Couple of Days Before Writing a Single Spec
+title: Why I Prototype Before I Spec, and How Modern Tools Made That Possible
 date: 2026-03-16
-excerpt: Before writing a single spec, I prototype. Here's how modern tools have made that accessible to PMs and why it changes the quality of everything that follows.
+excerpt: Before writing a single spec, I prototype. Here's my journey leveraging modern tools that have made it faster and more accessible than ever.
 readTime: 7 min
 ---
 
@@ -13,7 +13,7 @@ This wasn't always easy. A couple of years ago, it required a fairly rare combin
 
 Today, the tooling has changed the game entirely. LLMs, AI coding tools, and platforms like Vercel and Supabase have collapsed the time and skill floor for prototyping to the point where "I built something working this weekend" is a realistic thing for even a not-so-technical PM to say. That said, it still requires certain foundational notions, which is a topic for another post. I'll be upfront: I consider myself fairly technical, having spent a few years as a software engineer before moving into product. But the gap between what was possible then and what's possible now is significant.
 
-Here's how I've done it, and why I think prototype-first is one of the most important shifts a PM can make right now.
+Here's why I think prototyping before writing specs matters, and the journey that shaped how I think about it.
 
 ---
 
