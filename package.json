@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "next build && gh-pages -d out --nojekyll"
+    "deploy": "npm run deploy:functions && next build && gh-pages -d out --nojekyll",
+    "supabase:link": "npx supabase link --project-ref oupxuaillphhvtdtmgih",
+    "deploy:functions": "npx supabase functions deploy --project-ref oupxuaillphhvtdtmgih --no-verify-jwt send-contact-email && npx supabase functions deploy --project-ref oupxuaillphhvtdtmgih --no-verify-jwt confirm-email && npx supabase functions deploy --project-ref oupxuaillphhvtdtmgih --no-verify-jwt validate-email && npx supabase functions deploy --project-ref oupxuaillphhvtdtmgih --no-verify-jwt chat"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.1",

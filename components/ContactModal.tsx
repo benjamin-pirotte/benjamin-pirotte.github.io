@@ -34,7 +34,7 @@ export default function ContactModal({ open, onClose }: Props) {
     e.preventDefault()
     setStatus('sending')
     try {
-      const { error } = await supabase.functions.invoke('send-contract-email', {
+      const { error } = await supabase.functions.invoke('send-contact-email', {
         body: { email, message },
       })
       if (error) throw error
