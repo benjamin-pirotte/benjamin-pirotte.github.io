@@ -51,6 +51,8 @@ The key benefits were immediate:
 
 The one real downside: it doesn't know your design system. The prototypes look generic, not like your product. That's a real gap, and you have to be upfront about it with customers ("this is rough, ignore the visual style"). In my experience, most customers are fine with it once you set expectations. What they care about is whether the flow makes sense, not whether the button colors match.
 
+If you're starting out with frontend prototyping, v0 is where I'd point you first. Low entry bar, fast results, and you get a shareable URL without having to think about deployment at all. Lovable is a solid alternative with a similar approach: you describe what you want, it builds the UI, and you can publish it to share with customers in one click. Neither requires you to touch the code directly, which is the point.
+
 ---
 
 ## Bringing It to AI Features: A CLI Built in Two Evenings
@@ -65,7 +67,9 @@ Two problems, one solution?
 
 The issue is that we were in the middle of a major release. There was no world in which I could redirect engineering bandwidth to answer this question with a proper feature. But there was a second problem beyond the bandwidth: I genuinely didn't know what was possible. LLMs were moving fast, and I didn't have the engineering capacity to run a proper technical investigation either. So I decided to answer both questions at once, by building something myself.
 
-I sat down and built a small CLI using Cursor. The goal was straightforward: let users define Soda data quality contracts by describing them in plain text instead of writing YAML or clicking through the UI.
+I sat down and built a small CLI using Cursor. v0 was no longer the right tool here: this wasn't a UI application. It needed to call an LLM, process a response, and output something structured. That's where tools like Cursor or Claude Code come in. They let you go beyond the frontend and build backends, scripts, Python apps, anything that involves actual logic. The tradeoff is that you start having to think about deployment if you want to share it. For this prototype though, running it locally was enough.
+
+The goal was straightforward: let users define Soda data quality contracts by describing them in plain text instead of writing YAML or clicking through the UI.
 
 The CLI I built sat on top of an LLM, took plain-text instructions ("flag any order where the shipping date is before the order date"), and generated the corresponding Soda check. The user could review it, tweak it in natural language, and accept it.
 
@@ -123,7 +127,7 @@ Based on the way I've come to work, here's the rough approach:
 
 ## What Comes Next
 
-I've been moving more of this work onto Claude Code recently, and the workflow keeps evolving. In fact, this website was built with Claude Code. Which, if you think about it, is its own kind of proof of concept: a PM, no active frontend project on the side, shipping a working website by describing what he wants and iterating on what comes back.
+I've been moving more of this work onto Claude Code recently, and the workflow keeps evolving. In fact, this website was built with Claude Code and Supabase. Supabase's edge functions handle the light backend logic, and their database stores the data the application needs. The whole thing came together surprisingly fast, and Claude made the Supabase integration genuinely straightforward. Which, if you think about it, is its own kind of proof of concept: a PM, shipping a working full-stack website by describing what he wants and iterating on what comes back.
 
 The tools will keep changing. What won't change is the underlying principle: the fastest way to know if something is worth building is to build a version of it first.
 
