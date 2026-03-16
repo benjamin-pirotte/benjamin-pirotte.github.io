@@ -39,7 +39,7 @@ I had a few options. I could mock things up in Figma, but I'm not particularly f
 
 I started using v0 (Vercel's AI-powered UI generation tool), and it changed how I think about early-stage design work. If you're starting out with frontend prototyping, it's where I'd point you first. You don't need to write a single line of code: you describe what you want, the UI is generated and rendered right in front of you, and you iterate from there. You can look at the code if you want, but you never have to. And your work is published directly on the internet, so sharing it with a customer or a colleague is just sending a link. No setup, no deployment to think about.
 
-The pitch is simple: you describe what you want, and it generates working components and flows you can interact with in the browser. The reality matched the pitch pretty well. Within a few hours, I had full clickable flows that I could share with customers directly, with no setup on their end. There was no real backend logic, the flows ran on mock data that v0 generated, but that was enough. Customers could click through the migration experience, react to it, and give me concrete feedback on the flow itself.
+The reality matched the pitch pretty well. Within a few hours, I had full clickable flows that I could share with customers directly, with no setup on their end. There was no real backend logic, the flows ran on mock data that v0 generated, but that was enough. Customers could click through the migration experience, react to it, and give me concrete feedback on the flow itself.
 
 The key benefits were immediate:
 
@@ -64,7 +64,7 @@ The second was a problem we already knew about. Our users define what "good data
 
 Two problems, one solution?
 
-The issue is that we were still in the middle of the major release. There was no world in which I could redirect engineering bandwidth to look into what we could put on the roadmap. I genuinely didn't know what was possible. LLMs were moving fast, and I didn't have the engineering capacity to run a proper technical investigation either. So I decided to answer both questions at once, by building something myself.
+The issue was that we didn't have the engineering bandwidth to run research or proof of concepts. I genuinely didn't know what was actually feasible with LLMs at the time. The space was moving fast, and without prototypes working in front of me, I had no real basis for a roadmap answer. So I decided to build one myself.
 
 I sat down and built a small CLI using Cursor. v0 was no longer the right tool here: this wasn't a UI application. It needed to call an LLM, process a response, and output something structured. That's where tools like Cursor or Claude Code come in. They let you go beyond the frontend and build backends, scripts, Python apps, anything that involves actual logic. The tradeoff is that you start having to think about deployment if you want to share it. For this prototype though, running it locally was enough.
 
@@ -72,7 +72,7 @@ The goal was straightforward: let users define data quality contracts by describ
 
 The CLI I built sat on top of an LLM, took plain-text instructions ("flag any order where the shipping date is before the order date"), and generated the corresponding data quality check. The user could review it, tweak it in natural language, and accept it.
 
-I could have built a full UI around it, but that felt like the wrong first step. The goal was to validate two things: whether the technology could actually do this reliably, and see how the users would respond to the idea. The interface itself was secondary. And a CLI kept the scope tight while leaving the door open, since the same logic could eventually be embedded in the existing UI or kept as a standalone tool for more technical users.
+I could have built a full UI around it, but that felt like the wrong first step. The goal was to validate two things: whether the technology could actually do this reliably, and whether users would respond to the idea. The interface itself was secondary. And a CLI kept the scope tight while leaving the door open, since the same logic could eventually be embedded in the existing UI or kept as a standalone tool for more technical users.
 
 I sent it to a handful of customers. The response was immediate and concrete. They could see what we were thinking, they could try it themselves, and it sparked real interest and conversations about the direction.
 
@@ -92,7 +92,7 @@ Later I extended it to connect to our public API as well, so it could perform an
 
 The tooling for this kind of thing has moved fast. What I built with Cursor and a local MCP setup is probably achievable today as a simple skill on top of Claude. The pattern is the same: take a tool your users already rely on, wrap a natural language interface around it, and see what opens up.
 
-What started as a personal demo hack ended up on Soda's roadmap as a feature to productize for customers, driven by interest from the sales team, customer engineers, and customers themselves, all of whom were running into the same friction. Not a bad outcome for something that didn't exist in any spec.
+What started as a personal demo hack ended up on the company's roadmap as a feature to productize for customers, driven by interest from the sales team, customer engineers, and customers themselves, all of whom were running into the same friction. Not a bad outcome for something that didn't exist in any spec.
 
 ---
 
@@ -126,7 +126,7 @@ Based on the way I've come to work, here's the rough approach:
 
 ## What Comes Next
 
-After using Cursor for a while, I've been moving more of this work onto Claude Code recently, and the workflow keeps evolving. In fact, this website was built with Claude Code together with Supabase for the backend. The whole thing came together surprisingly fast in a couple of hours. Which, if you think about it, is its own kind of proof of concept: a PM, shipping a working full-stack website by describing what he wants and iterating on what comes back.
+After using Cursor for a while, I've been moving more of this work onto Claude Code recently, and the workflow keeps evolving. In fact, this website was built with Claude Code together with Supabase for the backend. The whole thing came together in a couple of hours. Which, if you think about it, is its own kind of proof of concept: a PM, shipping a working full-stack website by describing what he wants and iterating on what comes back.
 
 The tools will keep changing. What won't change is the underlying principle: the fastest way to know if something is worth building is to build a version of it first.
 
