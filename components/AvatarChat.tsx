@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState, useEffect } from 'react'
+import ReactMarkdown from 'react-markdown'
 import ContactModal from './ContactModal'
 
 const SUPABASE_URL = 'https://oupxuaillphhvtdtmgih.supabase.co/functions/v1'
@@ -37,6 +38,7 @@ export default function AvatarChat() {
   const cardRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
+  const lastBotMsgRef = useRef<HTMLDivElement>(null)
 
   const [stage, setStage] = useState<Stage>('verifying')
   const [chatMode, setChatMode] = useState<ChatMode>('unverified')
@@ -95,10 +97,16 @@ export default function AvatarChat() {
     }
   }, [chatMode, pendingAutoSend])
 
-  // Auto-scroll chat to bottom
+  // Auto-scroll: show top of new bot message, or bottom for user/typing
   useEffect(() => {
-    const el = messagesContainerRef.current
-    if (el) el.scrollTop = el.scrollHeight
+    const container = messagesContainerRef.current
+    if (!container) return
+    const lastMsg = messages[messages.length - 1]
+    if (!isTyping && lastMsg?.role === 'assistant' && lastBotMsgRef.current) {
+      container.scrollTop = lastBotMsgRef.current.offsetTop - container.offsetTop
+    } else {
+      container.scrollTop = container.scrollHeight
+    }
   }, [messages, isTyping])
 
   // Particle canvas
@@ -264,11 +272,11 @@ export default function AvatarChat() {
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        style={{ transition: 'transform 0.15s ease', transformStyle: 'preserve-3d' }}
-        className="w-full bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden"
+        style={{ transition: 'transform 0.15s ease', transformStyle: 'preserve-3d', height: '480px' }}
+        className="w-full bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden flex flex-col"
       >
-        {/* Avatar */}
-        <div className="relative flex flex-col items-center py-7 border-b border-gray-100 bg-gray-50 overflow-hidden">
+        {/* Avatar — hidden once conversation starts */}
+        {messages.length === 1 && <div className="relative flex flex-col items-center py-7 border-b border-gray-100 bg-gray-50 overflow-hidden">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
           <img
             src="/profile.png"
@@ -277,9 +285,9 @@ export default function AvatarChat() {
           />
           <p className="relative z-10 mt-3 font-semibold text-gray-900">Benjamin Pirotte</p>
           <p className="relative z-10 text-xs text-gray-500 mt-0.5">Product Management</p>
-        </div>
+        </div>}
 
-        <div style={{ minHeight: '240px' }} className="flex flex-col justify-center">
+        <div className="flex flex-col flex-1 justify-center overflow-hidden">
 
         {/* Verifying: checking localStorage / URL params */}
         {stage === 'verifying' && (
@@ -293,10 +301,10 @@ export default function AvatarChat() {
 
         {/* Chat */}
         {stage === 'chat' && (
-          <div className="flex flex-col p-4 gap-3">
-            <div ref={messagesContainerRef} className="space-y-2 max-h-52 overflow-y-auto pr-1">
+          <div className="flex flex-col flex-1 p-4 gap-3 overflow-hidden">
+            <div ref={messagesContainerRef} className="space-y-2 flex-1 overflow-y-auto pr-1">
               {messages.map((m, i) => (
-                <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div key={i} ref={m.role === 'assistant' && i === messages.length - 1 ? lastBotMsgRef : null} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div
                     className={`max-w-[85%] text-sm px-3 py-2 rounded-xl leading-snug ${
                       m.role === 'user'
@@ -304,7 +312,9 @@ export default function AvatarChat() {
                         : 'bg-gray-100 text-gray-800 rounded-bl-sm'
                     }`}
                   >
-                    {m.text}
+                    {m.role === 'assistant'
+                      ? <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0"><ReactMarkdown>{m.text}</ReactMarkdown></div>
+                      : m.text}
                   </div>
                 </div>
               ))}

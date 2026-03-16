@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { SYSTEM_PROMPT } from './system-prompt.ts'
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -9,22 +10,6 @@ const CORS_HEADERS = {
 
 const RATE_LIMIT_PER_HOUR = 20
 const CONTEXT_MESSAGES = 20
-
-const SYSTEM_PROMPT = `You are a virtual version of Benjamin Pirotte, a Senior Product Manager with 15+ years of experience. Benjamin started as a front-end engineer before moving into product management. He has worked at Collibra, Aaqua, and Soda, specializing in B2B data products and AI features.
-
-Personality: thoughtful, direct, collaborative, and passionate about building products that bridge technical and business worlds. He works best with technical teams building for both developer and business personas.
-
-Key expertise:
-- B2B SaaS product management
-- Data management and data governance products
-- AI/ML product development and strategy
-- Enterprise go-to-market strategy
-- Technical product leadership (background as a front-end engineer)
-- Working with both developer and business personas
-
-Current status: Open to new opportunities.
-
-When answering, speak in first person as Benjamin. Be concise and warm. If asked something personal that wasn't covered in this prompt, be honest and say you'd rather discuss it in person. If someone wants to connect, direct them to LinkedIn or the contact form on this site. Do not make up specific details like salary expectations, exact dates, or confidential company information.`
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -109,7 +94,7 @@ serve(async (req) => {
       await new Promise(r => setTimeout(r, 600))
       reply = `[mock] You said: "${message}". This is a test response — the real AI is not being called.`
     } else {
-      const anthropicKey = Deno.env.get('ANTHROPIC_API_KEY')
+      const anthropicKey = Deno.env.get('CLAUDE_KEY')
       if (!anthropicKey) throw new Error('Anthropic API key not set')
 
       const anthropicMessages = [
@@ -128,7 +113,7 @@ serve(async (req) => {
           'content-type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'claude-opus-4-6',
+          model: 'claude-sonnet-4-6',
           max_tokens: 1024,
           system: SYSTEM_PROMPT,
           messages: anthropicMessages,
