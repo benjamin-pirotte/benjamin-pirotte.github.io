@@ -11,7 +11,7 @@ Not always a polished prototype; rough edges are fine, the point is having somet
 
 This wasn't always easy. A couple of years ago, it required a fairly rare combination of product instincts and engineering or design skills. And even for designers, building a prototype with tools like Figma that felt realistic and interactive enough to get genuine reactions from customers was time-consuming work. 
 
-Today, the tooling has changed the game entirely. LLMs, AI coding tools, and platforms like Vercel and Supabase have collapsed the time and skill floor for prototyping to the point where "I built something working this weekend" is a realistic thing for even a not-so-technical PM to say. That said, it still requires certain foundational notions, which is a topic for another post. I'll be upfront: I consider myself fairly technical, having spent a few years as a software engineer before moving into product. But the gap between what was possible then and what's possible now is significant.
+Today, the tooling has changed the game entirely. LLMs, AI coding tools, and platforms like Vercel and Supabase have collapsed the time and skill floor for prototyping to the point where "I built something working this weekend" is a realistic thing for even a not-so-technical PM to say. That said, it still requires certain foundational notions, which is a topic for another post. I'll be upfront: I consider myself fairly technical, having spent several years as a software engineer before moving into product. But the gap between what was possible then and what's possible now is significant.
 
 Here's why I think prototyping before writing specs matters, and the journey that shaped how I think about it.
 
@@ -33,13 +33,13 @@ That's the core value of prototyping first. Not the artifact. The learning, earn
 
 ## Starting With UI: v0 as a Design Collaborator
 
-My first serious foray into AI-assisted prototyping wasn't about AI features at all. It was about a much more mundane problem: our UX designer was stretched thin across other priorities, and I needed to validate a few new flows with customers without pulling them off their current work.
+My first serious foray into AI-assisted prototyping wasn't about AI features at all. It was about a much more mundane problem. I was working for a data quality platform, one that helps data teams define and enforce the quality of their data. We were releasing a major new version of the product that required customers to migrate. We had a solid technical approach, but customers wanted to see what the migration flow would actually look like for their users. They needed to understand it, trust that it would work, and plan accordingly. I needed to show them something quickly.
 
 I had a few options. I could mock things up in Figma, but I'm not particularly fluent there. I could try to work in our actual frontend stack, but it was too complex to ramp up on the structure quickly, and even if I did, publishing a standalone prototype in isolation wouldn't have been straightforward. Or I could find another way.
 
-I started using v0 (Vercel's AI-powered UI generation tool), and it changed how I think about early-stage design work.
+I started using v0 (Vercel's AI-powered UI generation tool), and it changed how I think about early-stage design work. If you're starting out with frontend prototyping, it's where I'd point you first. You don't need to write a single line of code: you describe what you want, the UI is generated and rendered right in front of you, and you iterate from there. You can look at the code if you want, but you never have to. And your work is published directly on the internet, so sharing it with a customer or a colleague is just sending a link. No setup, no deployment to think about.
 
-The pitch is simple: you describe what you want, and it generates working components and flows you can interact with in the browser. The reality matched the pitch pretty well. Within a few hours, I had full clickable flows that I could share with customers directly, with no setup on their end and no risk of exposing any real data.
+The pitch is simple: you describe what you want, and it generates working components and flows you can interact with in the browser. The reality matched the pitch pretty well. Within a few hours, I had full clickable flows that I could share with customers directly, with no setup on their end. There was no real backend logic, the flows ran on mock data that v0 generated, but that was enough. Customers could click through the migration experience, react to it, and give me concrete feedback on the flow itself.
 
 The key benefits were immediate:
 
@@ -51,27 +51,26 @@ The key benefits were immediate:
 
 The one real downside: it doesn't know your design system. The prototypes look generic, not like your product. That's a real gap, and you have to be upfront about it with customers ("this is rough, ignore the visual style"). In my experience, most customers are fine with it once you set expectations. What they care about is whether the flow makes sense, not whether the button colors match.
 
-If you're starting out with frontend prototyping, v0 is where I'd point you first. Low entry bar, fast results, and you get a shareable URL without having to think about deployment at all. Lovable is a solid alternative with a similar approach: you describe what you want, it builds the UI, and you can publish it to share with customers in one click. Neither requires you to touch the code directly, which is the point.
 
 ---
 
-## Bringing It to AI Features: A CLI Built in Two Evenings
+## Bringing It to AI Features: A CLI Built Over a Weekend
 
-Fast forward a few months or so. For context, I was working at Soda, a data quality platform that helps data teams define and enforce the quality of their data. Concretely, users define what "good data" looks like for their datasets by writing YAML configuration (as code or through a UI editor).
+Fast forward a few weeks or so. We were still in the thick of that release.
 
-Two problems were converging at the same time. The first: LLMs were gaining serious traction internally at many of our customers, and that created top-down pressure to adopt them. A handful of our most critical accounts were asking pointed questions: what is Soda doing with AI? What does your roadmap look like here? 
+Two problems were converging at the same time. The first: LLMs were gaining serious traction internally at many of our customers, and that created top-down pressure to adopt them. A handful of our most critical accounts were asking pointed questions: what are you doing with AI? What does your roadmap look like here? 
 
-The second was a problem we already knew about. Soda's configuration process had a real learning curve, and even after you'd climbed it, defining quality rules across many datasets and columns just took time. The more rules you needed, the more you felt it.
+The second was a problem we already knew about. Our users define what "good data" looks like for their datasets by writing YAML configuration (as code or through a UI editor). It had a real learning curve, and even after you'd climbed it, defining quality rules across many datasets and columns just took time. The more rules you needed, the more you felt it.
 
 Two problems, one solution?
 
-The issue is that we were in the middle of a major release. There was no world in which I could redirect engineering bandwidth to answer this question with a proper feature. But there was a second problem beyond the bandwidth: I genuinely didn't know what was possible. LLMs were moving fast, and I didn't have the engineering capacity to run a proper technical investigation either. So I decided to answer both questions at once, by building something myself.
+The issue is that we were still in the middle of the major release. There was no world in which I could redirect engineering bandwidth to look into what we could put on the roadmap. I genuinely didn't know what was possible. LLMs were moving fast, and I didn't have the engineering capacity to run a proper technical investigation either. So I decided to answer both questions at once, by building something myself.
 
 I sat down and built a small CLI using Cursor. v0 was no longer the right tool here: this wasn't a UI application. It needed to call an LLM, process a response, and output something structured. That's where tools like Cursor or Claude Code come in. They let you go beyond the frontend and build backends, scripts, Python apps, anything that involves actual logic. The tradeoff is that you start having to think about deployment if you want to share it. For this prototype though, running it locally was enough.
 
-The goal was straightforward: let users define Soda data quality contracts by describing them in plain text instead of writing YAML or clicking through the UI.
+The goal was straightforward: let users define data quality contracts by describing them in plain text instead of writing YAML or clicking through the UI.
 
-The CLI I built sat on top of an LLM, took plain-text instructions ("flag any order where the shipping date is before the order date"), and generated the corresponding Soda check. The user could review it, tweak it in natural language, and accept it.
+The CLI I built sat on top of an LLM, took plain-text instructions ("flag any order where the shipping date is before the order date"), and generated the corresponding data quality check. The user could review it, tweak it in natural language, and accept it.
 
 I could have built a full UI around it, but that felt like the wrong first step. The goal was to validate two things: whether the technology could actually do this reliably, and see how the users would respond to the idea. The interface itself was secondary. And a CLI kept the scope tight while leaving the door open, since the same logic could eventually be embedded in the existing UI or kept as a standalone tool for more technical users.
 
@@ -115,7 +114,7 @@ Based on the way I've come to work, here's the rough approach:
 
 **Start with a question, not a feature.** The prototype should answer something specific. Is this interaction intuitive? Will customers use this? Does this technical approach actually work? If you don't know what question you're trying to answer, you'll build the wrong thing.
 
-**Pick the right tool for the prototype.** UI validation work? v0 or Lovable or similar. Backend logic or AI feature exploration? Prefer Claude Code or Cursor. Data analysis or quick integrations? A Python script or a Supabase project. The goal is the fastest path to something real, not the most impressive stack.
+**Pick the right tool for the prototype.** UI validation work? v0 is where I'd start. Backend logic or AI feature exploration? Prefer Claude Code or Cursor. The goal is the fastest path to something real, not the most impressive stack.
 
 **Share it before it's ready.** The prototype is a conversation starter, not a finished product. The earlier you share it, the more useful the feedback. Waiting until it's polished defeats the point.
 
@@ -127,7 +126,7 @@ Based on the way I've come to work, here's the rough approach:
 
 ## What Comes Next
 
-I've been moving more of this work onto Claude Code recently, and the workflow keeps evolving. In fact, this website was built with Claude Code and Supabase. Supabase's edge functions handle the light backend logic, and their database stores the data the application needs. The whole thing came together surprisingly fast, and Claude made the Supabase integration genuinely straightforward. Which, if you think about it, is its own kind of proof of concept: a PM, shipping a working full-stack website by describing what he wants and iterating on what comes back.
+After using Cursor for a while, I've been moving more of this work onto Claude Code recently, and the workflow keeps evolving. In fact, this website was built with Claude Code together with Supabase for the backend. The whole thing came together surprisingly fast in a couple of hours. Which, if you think about it, is its own kind of proof of concept: a PM, shipping a working full-stack website by describing what he wants and iterating on what comes back.
 
 The tools will keep changing. What won't change is the underlying principle: the fastest way to know if something is worth building is to build a version of it first.
 
